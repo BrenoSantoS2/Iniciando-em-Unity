@@ -4,23 +4,28 @@ using UnityEngine;
 
 public class bird : MonoBehaviour
 {
+    public LogicScript logic;
+
     public Rigidbody2D myRigidbody;
     public float jumpForce = 5;
+    public bool birdIsAlive = true;
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && birdIsAlive)
         {
             myRigidbody.velocity = new Vector2(0,1) * jumpForce;
- //           myRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
-            
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        logic.GameOver();
+        birdIsAlive = false;
     }
 }
